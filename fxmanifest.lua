@@ -3,39 +3,26 @@ game 'gta5'
 lua54 'yes'
 author 'Kakarot'
 description 'Core resource for the framework, contains all the core functionality and features'
-version '1.2.6'
+version '2.0.0'
 
 shared_scripts {
     'config.lua',
-    'shared/locale.lua',
-    'locale/en.lua',
-    'locale/*.lua',
-    'shared/main.lua',
-    'shared/items.lua',
-    'shared/jobs.lua',
-    'shared/vehicles.lua',
-    'shared/gangs.lua',
-    'shared/weapons.lua',
-    'shared/locations.lua'
+    'core/utils/**/shared.lua',
+    -- 'core/components/**/shared.lua',
+    -- 'core/modules/**/shared.lua',
 }
 
 client_scripts {
-    'client/main.lua',
-    'client/functions.lua',
-    'client/loops.lua',
-    'client/events.lua',
-    'client/drawtext.lua'
+    'core/client.lua',
+    'core/utils/**/client.lua',
+    'core/**/**/client.lua',
 }
 
 server_scripts {
     '@oxmysql/lib/MySQL.lua',
-    'server/main.lua',
-    'server/functions.lua',
-    'server/player.lua',
-    'server/events.lua',
-    'server/commands.lua',
-    'server/exports.lua',
-    'server/debug.lua'
+    'core/server.lua',
+    'core/components/**/server.lua',
+    'core/**/**/server.lua',
 }
 
 ui_page 'html/index.html'
