@@ -7,3 +7,9 @@ QBCorev2.Functions = QBCorev2.Functions or {}
 exports('QBCoreReturn', function()
     return QBCorev2
 end)
+
+local QBCore = exports['qb-core']:GetCoreObject()
+
+RegisterNetEvent('testjobs',function()
+    QBCore.Debug(QBCore.Shared.Jobs['test'])
+end)

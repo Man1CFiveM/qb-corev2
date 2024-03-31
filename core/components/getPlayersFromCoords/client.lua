@@ -1,6 +1,8 @@
+--- Get players from coords
 ---@param coords vector3 -- The coordinates to check from (default is the player's coords)
 ---@param distance number -- The distance to check from, default is 5
 ---@return table -- List of players
+---@usage QBCorev2.Components.GetPlayersFromCoords(vector3(0, 0, 0), 5)
 function QBCorev2.Components.GetPlayersFromCoords(coords, distance)
     local players = GetActivePlayers()
     local playerPed = PlayerPedId()

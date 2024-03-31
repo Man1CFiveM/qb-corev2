@@ -10,7 +10,7 @@ end
 ---@param expected any
 ---@param actual any
 ---@usage QBCorev2.Utils.validateArgs({'string', 'number'}, {1, 'string'}), using | can be used to look for multiple types
-function QBCorev2.Utils.validateArgs(expected, actual)
+function QBCorev2.Utils.ValidateArgs(expected, actual)
     if type(expected) ~= 'table' then
         if type(actual) ~= expected then
             error(string.format("Invalid argument: argument %d must be a %s", actual, expected), 2)

@@ -1,5 +1,7 @@
+--- Get all peds in the game world
 ---@param ignoreList table -- List of peds to ignore
 ---@return table -- List of peds
+---@usage QBCorev2.Components.GetPeds({ped1, ped2})
 function QBCorev2.Components.GetPeds(ignoreList)
     local pedPool = GetGamePool('CPed')
     local peds = {}
