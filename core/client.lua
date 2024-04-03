@@ -4,12 +4,13 @@ QBCorev2.Components = QBCorev2.Components or {}
 QBCorev2.Modules = QBCorev2.Modules or {}
 QBCorev2.Functions = QBCorev2.Functions or {}
 
+-- QBCore = QBCore or {}
+-- QBCore.Functions = QBCore.Functions or {}
+
+-- exports('GetCoreObject', function()
+--     return QBCore
+-- end)
+
 exports('QBCoreReturn', function()
     return QBCorev2
-end)
-
-local QBCore = exports['qb-core']:GetCoreObject()
-
-RegisterNetEvent('testjobs',function()
-    QBCore.Debug(QBCore.Shared.Jobs['test'])
 end)

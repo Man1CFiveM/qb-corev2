@@ -1,7 +1,3 @@
-QBCorev2 = QBCorev2 or {}
-QBCorev2.Modules = QBCorev2.Modules or {}
-
---- func description
 ---@param name string: The name of the progress bar
 ---@param label string: The text to display on the progress bar
 ---@param duration number: The duration of the progress bar in milliseconds
@@ -13,13 +9,17 @@ QBCorev2.Modules = QBCorev2.Modules or {}
 ---@param propTwo string: The second prop to display while the progress bar is active
 ---@param onFinish function: The function to call when the progress bar completes
 ---@param onCancel function: The function to call when the progress bar is cancelled
---docs.qbcore.net/progress-bar
-function QBCorev2.Modules.progressbar(name, label, duration, useWhileDead, canCancel, disableControls, animation, prop, propTwo, onFinish, onCancel)
-    -- QBCorev2.Utils.validateArgs({name, label, duration, useWhileDead, canCancel, disableControls, animation, prop, propTwo, onFinish, onCancel}, {'string', 'string', 'number', 'boolean', 'boolean', 'boolean', 'string', 'string', 'string', 'function', 'function'})
-    if GetResourceState('progressbar') ~= 'started' then
+---@usage QBCorev2.Modules.progressbar('unique_name', 'Doing something', 5000, false, false, false, 'prop', 'propTwo', function() print('Finished') end, function() print('Cancelled') end)
+function QBCorev2.Modules.Progressbar(name, label, duration, useWhileDead, canCancel, disableControls, animation, prop, propTwo, onFinish, onCancel)
+    QBCorev2.Utils.ValidateArgs({name, label, duration, useWhileDead, canCancel, disableControls, animation, prop, propTwo, onFinish, onCancel}, {'string', 'string', 'number', 'boolean', 'boolean', 'boolean', 'string', 'string', 'string', 'function', 'function'}, function (success, err)
+        if not success then
+            error(err)
+        end
+    end)
+    
+        if GetResourceState('progressbar') ~= 'started' then
         error('The progressbar resource needs to be started in order for QBCore.Modules.progressbar to work. Please ensure the progressbar resource is running.') 
     end
-
     -- Validate essential parameters
     if not name or not label or not duration then
         error('The parameters name, label, and duration are required for creating a progress bar.')

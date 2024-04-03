@@ -101,3 +101,12 @@ function QBCorev2.Components.GetZoneAtCoords(coords)
     local zoneText = GetNameOfZone(coords.x, coords.y, coords.z)
     return zoneNames[zoneText], zoneText
 end
+
+--- Backwards compatibility for QBCore.Functions.GetZoneAtCoords
+function QBCore.Functions.GetZoneAtCoords(coords)
+    if type(coords) == 'vector3' then
+        return QBCorev2.Components.GetZoneAtCoords(coords)
+    else
+        return QBCorev2.Components.GetZoneAtCoords(vector3(coords.x, coords.y, coords.z))
+    end
+end

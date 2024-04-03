@@ -1,11 +1,11 @@
-QBCorev2.Modules.Vehicle = {}
+QBCorev2.Components.Vehicle = {}
 --- Spawns a vehicle at the specified coordinates and returns the vehicle and networkid, client-side only
 ---@param model string|number -- model name or hash
 ---@param cb function -- callback function
 ---@param coords vector4|false -- vector4 or false
 ---@param isnetworked boolean -- is networked
 ---@param teleportInto boolean -- teleport into vehicle
----@return number, number -- vehicle, networkid
+---@return number|nil -- vehicle, networkid
 ---@usage QBCorev2.Modules.Vehicles.Spawn('adder', function(vehicle) print(vehicle) end, false, true, true)
 function QBCorev2.Modules.Vehicle.Spawn(model, cb, coords, isnetworked, teleportInto)
     QBCorev2.Utils.validateArgs({model, cb, coords, isnetworked, teleportInto}, {'string|number', 'function', 'vector4|false', 'boolean', 'boolean'})
@@ -32,23 +32,23 @@ function QBCorev2.Modules.Vehicle.Spawn(model, cb, coords, isnetworked, teleport
     return veh, netid
 end
 
-function QBCorev2.Modules.Vehicle.Delete(vehicle)
+function QBCorev2.Components.Vehicle.Delete(vehicle)
     if not DoesEntityExist(vehicle) then return error('this entity does not exist: '..vehicle, 2)end
     SetEntityAsMissionEntity(vehicle, true, true)
     DeleteVehicle(vehicle)
 end
 
-function QBCorev2.Modules.Vehicle.GetPlate(vehicle)
+function QBCorev2.Components.Vehicle.GetPlate(vehicle)
     if vehicle == 0 then return end
     return QBCorev2.Utils.Trim(GetVehicleNumberPlateText(vehicle))
 end
 
-function QBCorev2.Modules.Vehicle.GetLabel(vehicle)
+function QBCorev2.Components.Vehicle.GetLabel(vehicle)
     if vehicle == nil or vehicle == 0 then return end
     return GetLabelText(GetDisplayNameFromVehicleModel(GetEntityModel(vehicle)))
 end
 
-function QBCorev2.Modules.Vehicle.GetProperties(vehicle)
+function QBCorev2.Components.Vehicle.GetProperties(vehicle)
     if vehicle == nil or vehicle == 0 then return end
     local props = {
         model = GetEntityModel(vehicle),
@@ -84,17 +84,17 @@ end
 
 -- backwards compatibility
 function QBCore.Functions.SpawnVehicle(model, cb, coords, isnetworked, teleportInto)
-    QBCorev2.Modules.Vehicle.Spawn(model, cb, coords, isnetworked, teleportInto)
+    QBCorev2.Components.Vehicle.Spawn(model, cb, coords, isnetworked, teleportInto)
 end
 
 function QBCore.Functions.DeleteVehicle(vehicle)
-    QBCorev2.Modules.Vehicle.Delete(vehicle)
+    QBCorev2.Components.Vehicle.Delete(vehicle)
 end
 
 function QBCore.Functions.GetVehicleProperties(vehicle)
-    QBCorev2.Modules.Vehicle.GetProperties(vehicle)
+    QBCorev2.Components.Vehicle.GetProperties(vehicle)
 end
 
 function QBCore.Functions.GetVehiclePlate(vehicle)
-    QBCorev2.Modules.Vehicle.GetPlate(vehicle)
+    QBCorev2.Components.Vehicle.GetPlate(vehicle)
 end

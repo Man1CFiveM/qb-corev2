@@ -1,6 +1,4 @@
-QBCorev2.Modules = {} or QBCorev2.Modules
-
-QBCorev2.Modules.Display = setmetatable({
+QBCorev2.Components.Display = setmetatable({
     prompt = function(self, _text, _position)
         QBCorev2Utils.validateArgs({'string', 'string'}, {_text, _position})
         if type(_position) ~= 'string' then _position = 'left' end

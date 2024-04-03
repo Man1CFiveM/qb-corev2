@@ -37,7 +37,7 @@
 --         EndTextCommandDisplayText(_x - _width / 2, _y - _height / 2 + 0.005)
 --     end
 -- end
-
+-- local QBCore = exports['qb-core']:GetCoreObject()
 -- -- Add the functions to the metatable
 -- QBCorev2.Functions.DrawText = setmetatable({
 --     text3d = text3d,
