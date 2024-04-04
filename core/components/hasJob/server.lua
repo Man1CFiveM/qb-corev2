@@ -31,7 +31,7 @@ end
 ---@param jobName string -- The name of the job to check
 ---@param onduty boolean -- Whether to check if the player is on duty (optional, defaults to false)
 ---@usage QBCorev2.Components.Callbacks.TriggerServerCallback('qb-corev2:getJobCount', source, function(totalPlayers, jobCount, players) print(totalPlayers, jobCount, players) end, 'police')
-QBCorev2.Components.Callbacks.CreateServerCallback('qb-corev2:callback:getJobCount', function(source, cb, jobName, onduty)
+QBCorev2.Components.Callbacks:CreateServerCallback('qb-corev2:callback:getJobCount', function(source, cb, jobName, onduty)
     QBCorev2.Utils.ValidateArgs({jobName, onduty}, {'string', 'boolean'}, function(success, err)
         if not success then
             error(err)

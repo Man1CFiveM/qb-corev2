@@ -1,8 +1,11 @@
+local QBCore = exports['qb-core']:GetCoreObject()
 QBCorev2.Components.Callbacks = {
     ServerCallbacks = {},
 
     CreateServerCallback = function(self, name, cb)
-        self.ServerCallbacks[name] = cb
+        if not self.ServerCallbacks[name] then
+            self.ServerCallbacks[name] = cb
+        end
     end,
 
     TriggerServerCallback = function(self, name, source, cb, ...)
@@ -30,6 +33,3 @@ end
 function QBCorev2.Functions.TriggerClientCallback(name, source, cb, ...)
     QBCorev2.Components.Callbacks.TriggerClientCallback(name, source, cb, ...)
 end
-
-local QBCore = exports['qb-core']:GetCoreObject()
-QBCore.Debug(QBCorev2)
