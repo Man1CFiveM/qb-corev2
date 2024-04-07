@@ -1,8 +1,11 @@
+--- Callbacks for client side to server side and vice versa communication
 QBCorev2.Components.Callbacks = {
     ClientCallbacks = {},
 
     CreateClientCallback = function(self, name, cb)
-        self.ClientCallbacks[name] = cb
+        if not self.ClientCallbacks[name] then
+            self.ClientCallbacks[name] = cb
+        end
     end,
 
     ClientCallback = function(self, name, cb, ...)

@@ -187,44 +187,28 @@ function QBCorev2.Modules.HasItem(source, items, amount)
     return exports['qb-inventory']:HasItem(source, items, amount)
 end
 
-function QBCorev2.Modules.UseableItem()
-    local item = {}
+QBCorev2.Modules.UseableItem = {
+    --- Create a usable item
+    ---@param itemName string Name of the item
+    ---@param data table Data of the item
+    ---@useage QBCorev2.Modules.UseableItem:Create('bread', {name = 'bread', label = 'Bread', weight = 1.0, type = 'item', useable = true, description = 'A piece of bread'})
+    Create = function(itemName, data)
+        return exports['qb-inventory']:CreateUsableItem(itemName, data)
+    end,
 
-    local function create()
-        print('create()')
-        -- Implement the create method here
-    end
+    --- Get the usable item details of the item
+    ---@param itemName string Name of the item
+    ---@return table Usable item details
+    ---@useage QBCorev2.Modules.UseableItem:Get('bread')
+    Get = function(itemName)
+        return exports['qb-inventory']:GetUsableItem(itemName)
+    end,
 
-    local function get()
-        print('get()')
-        -- Implement the get method here
-    end
-
-    local function use()
-        print('use()')
-        -- Implement the use method here
-    end
-
-    -- Expose a method to create a new item
-    function item:new()
-        create()
-        return self
-    end
-
-    -- Expose a method to get the item
-    function item:getItem()
-        get()
-        return self
-    end
-
-    -- Expose a method to use the item
-    function item:useItem()
-        use()
-        return self
-    end
-
-    return item
-end
-
-local myItem = QBCorev2.Modules.UseableItem()
-myItem:new()
+    --- Use the item with the provided name
+    ---@param itemName string Name of the item
+    ---@vararg any
+    ---@usage QBCorev2.Modules.UseableItem:Use('bread')
+    Use = function(itemName, ...)
+        return exports['qb-inventory']:UseItem() --TODO should be called GetUsableItem() instead of UseItem()
+    end,
+}

@@ -1,6 +1,8 @@
-QBCorev2Components = QBCorev2Components or {}
-
-function QBCorev2Components.LoadAnimSet(animSet)
+--- LoadAnimSet function
+--- @param animSet string
+--- @return boolean, string
+--- @usage QBCorev2.Components.LoadAnimSet('move_m@drunk@verydrunk')
+function QBCorev2.Components.LoadAnimSet(animSet)
     if HasAnimSetLoaded(animSet) then return end
     RequestAnimSet(animSet)
     local time = GetGameTimer()

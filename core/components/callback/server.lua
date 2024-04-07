@@ -1,4 +1,3 @@
-local QBCore = exports['qb-core']:GetCoreObject()
 QBCorev2.Components.Callbacks = {
     ServerCallbacks = {},
 

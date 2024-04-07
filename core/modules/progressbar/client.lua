@@ -16,8 +16,8 @@ function QBCorev2.Modules.Progressbar(name, label, duration, useWhileDead, canCa
             error(err)
         end
     end)
-    
-        if GetResourceState('progressbar') ~= 'started' then
+
+    if GetResourceState('progressbar') ~= 'started' then
         error('The progressbar resource needs to be started in order for QBCore.Modules.progressbar to work. Please ensure the progressbar resource is running.') 
     end
     -- Validate essential parameters

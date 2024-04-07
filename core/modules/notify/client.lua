@@ -2,39 +2,37 @@ RegisterNUICallback('getNotifyConfig', function(_, cb) -- why isnt this in the n
     cb(QBCore.Config.Notify)
 end)
 
---- docs.QBCorev2org
----@param _text string | table -- single string or table with text and/or caption
----@param _type string -- primary | success | warning | error | police | etc, colour of the notification
----@param _duration number -- time in ms 1000 = 1 second
----@param _icon string -- icon name, see QBConfig.Notify.VariantDefinitions
-function QBCorev2.Modules.Notify(_text, _type, _duration, _icon)
-    QBCorev2.Utils.validateArgs({'string', 'string', 'number', 'string'}, {_text, _type, _duration, _icon})
+---Notify the client with a message
+---@param text string | table -- single string or table with text and/or caption
+---@param type string -- primary | success | warning | error | police | etc, colour of the notification
+---@param duration number -- time in ms 1000 = 1 second
+---@param icon string -- icon name, see QBConfig.Notify.VariantDefinitions
+function QBCorev2.Modules.Notify(text, type, duration, icon)
+    QBCorev2.Utils.validateArgs({'string', 'string', 'number', 'string'}, {text, type, duration, icon})
     local message = {
         action = 'notify',
-        type = _type or 'primary',
-        length = _duration or 5000,
+        type = type or 'primary',
+        length = duration or 5000,
     }
-    message.text = _text
-    if type(_text) == 'table' then
-        message.text = _text.text or 'Placeholder'
-        message.caption = _text.caption or 'Placeholder'
+
+    message.text = text
+    if type(text) == 'table' then
+        message.text = text.text or 'Placeholder'
+        message.caption = text.caption or 'Placeholder'
     end
 
-    if _icon then
-        message.icon = _icon
+    if icon then
+        message.icon = icon
     end
     SendNUIMessage(message)
 end
 
-RegisterNetEvent('qbcore:modules:notify', function(_text, _type, _duration, _icon)
-    QBCorev2.Modules.Notify(_text, _type, _duration, _icon)
+---Netevent to notify the client from the server
+---@param text string -- the text to display
+---@param type string -- primary | success | warning | error | police | etc, colour of the notification
+---@param duration number -- time in ms 1000 = 1 second
+---@param icon string -- icon name, see QBConfig.Notify.VariantDefinitions
+---@usage TriggerEvent('qbcore:modules:notify', 'Hello World', 'primary', 5000, 'fas fa-bell')
+RegisterNetEvent('qbcore:modules:notify', function(text, type, duration, icon)
+    QBCorev2.Modules.Notify(text, type, duration, icon)
 end)
-
--- okokNotify is a notification resource, this is a wrapper for it
--- function QBCorev2.Modules.Notify(_text, _type, _duration, _icon, _playSound)
---     if not _playSound then _playSound = false end
---     if type(_text) ~= 'table' then
---         exports['okokNotify']:Alert('', _text, _duration, _type, _playSound)
---     end
---     exports['okokNotify']:Alert(_text.caption, _text.text, _duration, 'type', _playSound)
--- end

@@ -1,5 +1,4 @@
 -- initialization file for QBCore framework
-
 QBCorev2 = QBCorev2 or {}
 QBCorev2.Components = QBCorev2.Components or {}
 QBCorev2.Modules = QBCorev2.Modules or {}
