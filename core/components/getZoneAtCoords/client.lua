@@ -97,7 +97,11 @@ local zoneNames = {
 ---@return string, string -- The name of the zone and the zone text
 ---@useage local zoneName, zoneText = QBCorev2.Components.GetZoneAtCoords(vector3)
 function QBCorev2.Components.GetZoneAtCoords(coords)
-    QBCorev2.Utils.ValidateArgs({coords},{'vector3'})
+    QBCorev2.Utils.ValidateArgs({coords},{'vector3'}, function(success, err)
+        if not success then
+            return error(err)
+        end
+    end)
     local zoneText = GetNameOfZone(coords.x, coords.y, coords.z)
     return zoneNames[zoneText], zoneText
 end

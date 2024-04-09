@@ -8,7 +8,11 @@ end)
 ---@param duration number -- time in ms 1000 = 1 second
 ---@param icon string -- icon name, see QBConfig.Notify.VariantDefinitions
 function QBCorev2.Modules.Notify(text, type, duration, icon)
-    QBCorev2.Utils.validateArgs({'string', 'string', 'number', 'string'}, {text, type, duration, icon})
+    QBCorev2.Utils.validateArgs({'string', 'string', 'number', 'string'}, {text, type, duration, icon}, function (valid, err)
+        if not valid then
+            return error(err)
+        end
+    end)
     local message = {
         action = 'notify',
         type = type or 'primary',
@@ -36,3 +40,8 @@ end
 RegisterNetEvent('qbcore:modules:notify', function(text, type, duration, icon)
     QBCorev2.Modules.Notify(text, type, duration, icon)
 end)
+
+-- backward compatibility
+function QBCore.Functions.Notify(text, type, duration, icon)
+    QBCorev2.Modules.Notify(text, type, duration, icon)
+end
