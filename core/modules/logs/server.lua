@@ -1,66 +1,24 @@
--- function QBCorev2.Modules.Logger(_player, _name, ...)
---     print('logging',_player, _name)
--- end
+QBCorev2.Modules.Logger = {}
+local Logger = {}
 
-QBCorev2.Modules.Logger = {
-    Image = function (self,  data)
-        if not type(data) then
-            return exports.fmsdk:takeImage()
+function Logger:Text(level, message, metadata)
+    TriggerServerEvent('qb-core:server:LogMessage', level, message, metadata)
+end
+
+QBCorev2.Modules.Logger = setmetatable({}, {
+    __index = function(_, key)
+        local method = Logger[key]
+        if method then
+            return function(_, ...) return method(Logger, ...) end
+        else
+            error("Function " .. tostring(key) .. " does not exist in QBCorev2.Modules.Logger")
         end
-        exports.fmsdk:takeImage(data)
     end,
-    Text = function (self, level, header, data)
-        if not type(data) then
-            return exports.fmsdk:LogMessage(level, header)
-        end
-        exports.fmsdk:LogMessage(level, header, data)
+    __call = function(_, ...)
+        error("QBCorev2.Modules.Logger cannot be called like a function")
     end,
-}
+})
 
-
--- if service == 'fivemanage' then
---     local key = GetConvar('fivemanage:key', '')
-
---     if key ~= '' then
---         local endpoint = 'https://api.fivemanage.com/api/logs/batch'
-
---         local headers = {
---             ['Content-Type'] = 'application/json',
---             ['Authorization'] = key,
---             ['User-Agent'] = 'ox_lib'
---         }
-
---         function lib.logger(source, event, message, ...)
---             if not buffer then
---                 buffer = {}
-
---                 SetTimeout(500, function()
---                     PerformHttpRequest(endpoint, function(status, _, _, response)
---                         if status ~= 200 then 
---                             if type(response) == 'string' then
---                                 response = json.decode(response) or response
---                                 badResponse(endpoint, status, response)
---                             end
---                         end
---                     end, 'POST', json.encode(buffer), headers)
-
---                     buffer = nil
---                     bufferSize = 0
---                 end)
---             end
-
---             bufferSize += 1
---             buffer[bufferSize] = {
---                 level = "info",
---                 message = message,
---                 resource = cache.resource,
---                 metadata = {
---                     hostname = hostname,
---                     service = event,
---                     source = source,
---                     tags = formatTags(source, ... and string.strjoin(',', string.tostringall(...)) or nil),
---                 }
---             }
---         end
---     end
--- end
+RegisterNetEvent('qb-core:server:LogMessage',function(level, message, metadata)
+    Logger:Text(level, message, metadata)
+end)

@@ -43,4 +43,4 @@ QBCorev2.Components.Display = setmetatable({
     end
 })
 
-exports('Display', QBCorev2.Modules.Display())
+-- exports('Display', QBCorev2.Modules.Display())

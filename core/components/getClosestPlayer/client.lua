@@ -2,7 +2,7 @@
 --- @param coords vector3 -- entity to get closest player to
 --- @return number|boolean, number|boolean -- closest player to the player or entity
 --- @usage QBCorev2.Components.GetClosestPlayer(PlayerPedId())
-function QBCorev2.Components.Closest.Player(coords)
+function QBCorev2.Components.ClosestPlayer(coords)
     if not coords then coords = GetEntityCoords(PlayerPedId()) end
     local closestPlayers = QBCorev2.Components.GetPlayersFromCoords(coords, 5)
     local closestDistance = -1

@@ -32,13 +32,17 @@ local function tPrint(_table, _indent)
 end
 
 RegisterServerEvent('qbcore:utils:debug', function(_table, _indent, _resource)
-    QBCorev2.Utils.validateArgs({_table, _indent, _resource}, {'table', 'number', 'string'})
+    QBCorev2.Utils.ValidateArgs({_table, _indent, _resource}, {'table', 'number', 'string'}, function(success, err)
+        if not success then
+           return error(err)
+        end
+    end)
     print(('\x1b[4m\x1b[36m[ %s : DEBUG]\x1b[0m'):format(_resource))
     tPrint(_table, _indent)
     print('\x1b[4m\x1b[36m[ END DEBUG ]\x1b[0m')
 end)
 
-function QBCorev2.Utils.debug(tbl, indent)
+function QBCorev2.Utils.Debug(tbl, indent)
     -- QBCorev2.Utils.validateArgs({tbl, indent}, {'table', 'number'})
     TriggerEvent('QBCore:DebugSomething', tbl, indent, GetInvokingResource() or 'qb-core')
 end

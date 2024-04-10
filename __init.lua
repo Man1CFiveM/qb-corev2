@@ -4,6 +4,8 @@ QBCorev2.Components = QBCorev2.Components or {}
 QBCorev2.Modules = QBCorev2.Modules or {}
 QBCorev2.Utils = QBCorev2.Utils or {}
 --backward compatibility
+QBCore = QBCore or {}
+QBCore.Functions = QBCore.Functions or {}
 QBCorev2.Functions = QBCorev2.Functions or {}
 
 exports('QBCoreReturn', function()

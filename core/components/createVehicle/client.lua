@@ -7,7 +7,7 @@ QBCorev2.Components.Vehicle = {}
 ---@param teleportInto boolean -- teleport into vehicle
 ---@return number|nil -- vehicle, networkid
 ---@usage QBCorev2.Modules.Vehicles.Spawn('adder', function(vehicle) print(vehicle) end, false, true, true)
-function QBCorev2.Modules.Vehicle.Spawn(model, cb, coords, isnetworked, teleportInto)
+function QBCorev2.Components.Vehicle.Spawn(model, cb, coords, isnetworked, teleportInto)
     QBCorev2.Utils.validateArgs({model, cb, coords, isnetworked, teleportInto}, {'string|number', 'function', 'vector4|false', 'boolean', 'boolean'})
     if not IsModelInCdimage(model) then return error('vehicle not loaded', 2) end
 
