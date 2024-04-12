@@ -2,7 +2,6 @@
 --https://docs.fivem.net/docs/game-references/blips/#blip-colors
 --- Creates a blip for the specified coordinates
 
--- local Blip = {}
 -- display Behaviour explanation
 -- Rockstar seem to only use 0, 2, 3, 4, 5 and 8 in their scripts. Anything higher than 10 seems to be exactly the same as 10.
 -- 0 = Doesn't show up, ever, anywhere
@@ -13,18 +12,21 @@
 -- 8 = Shows on both main map and minimap. (Not selectable on map)
 
 QBCorev2.Components.Blip = {}
-
 Blip = {}
 Blip.__index = Blip
 
 -- Constructor
-function Blip.new(text, sprite, scale, colour)
+function Blip.new(colour)
     local self = setmetatable({}, Blip)
-    self.text = text
-    self.sprite = sprite
     self.colour = colour
-    self.scale = scale
     return self
+end
+
+-- Method for setting the default properties of a blip
+function Blip:setDefaultProperties(properties)
+    self.text = properties.text
+    self.sprite = properties.sprite
+    self.scale = properties.scale
 end
 
 -- Method for setting the properties of a blip
@@ -37,6 +39,7 @@ function Blip:setProperties()
     EndTextCommandSetBlipName(self.blip)
 end
 
+-- Method for setting additional properties of a blip
 function Blip:setAdditionalProperties(properties)
     local propertySetters = {
         display = function(blip, prop) SetBlipDisplay(blip, prop) end,
@@ -57,7 +60,6 @@ function Blip:setAdditionalProperties(properties)
             else
                 interval = prop
             end
-            print(blip, interval, duration)
             SetBlipFlashes(blip, true)
             SetBlipFlashInterval(blip, interval)
             if duration then
@@ -78,6 +80,29 @@ function Blip:setAdditionalProperties(properties)
     end
 end
 
+-- Method for setting additional properties of a area blip
+function Blip:setRestrictedProperties(properties)
+    local propertySetters = {
+        -- Only include the properties that are valid for this type of blip
+        flash = function(blip, prop)
+            SetBlipFlashes(blip, true)
+            SetBlipFlashInterval(blip, prop.interval)
+            if prop.duration then
+                SetBlipFlashTimer(blip, prop.duration)
+            end
+        end,
+        rotation = function(blip, prop) SetBlipRotation(blip, prop) end,
+        alpha = function(blip, prop) SetBlipAlpha(blip, prop) end,
+    }
+
+    for key, prop in pairs(properties) do
+        local setter = propertySetters[key]
+        if setter then
+            setter(self.blip, prop)
+        end
+    end
+end
+
 -- Method for adding a blip for a coordinate
 function Blip:addForCoord(x, y, z)
     self.blip = AddBlipForCoord(x, y, z)
@@ -87,7 +112,7 @@ end
 -- Method for adding a blip for an area
 function Blip:addForArea(x, y, z, width, height)
     self.blip = AddBlipForArea(x, y, z, width, height)
-    self:setProperties()
+    SetBlipColour(self.blip, self.colour)
 end
 
 -- Method for adding a blip for an entity
@@ -99,7 +124,7 @@ end
 -- Method for adding a blip for a radius
 function Blip:addForRadius(x, y, z, radius)
     self.blip = AddBlipForRadius(x, y, z, radius)
-    self:setProperties()
+    SetBlipColour(self.blip, self.colour)
 end
 
 -- Method for adding a blip for a pickup
@@ -127,26 +152,34 @@ QBCorev2.Modules.Blip = setmetatable({}, {
 })
 
 --- Adds a rectangular blip for the specified coordinates/area.
+---@param colour number -- The color of the blip
+---@param coords vector3 -- The coordinates of the blip
+---@param width number -- The width of the blip
+---@param height number -- The height of the blip
+---@param setRestrictedProperties table -- Additional properties to set for the blip
+---@return number -- The blip ID
+---@usage QBCorev2.Components.Blip:ToArea(1, GetEntityCoords(PlayerPedId()), 100.0, 100.0 {alpha = 100})
+function QBCorev2.Components.Blip:ToArea(colour, coords, width, height, setRestrictedProperties)
+    local myBlip = Blip.new(colour)
+    myBlip:addForArea(coords.x, coords.y, coords.z, width, height)
+    if setRestrictedProperties then
+        myBlip:setRestrictedProperties(setRestrictedProperties)
+    end
+    return myBlip:getBlipInstance()
+end
+
+--- Adds a blip for the specified coordinates.
 ---@param text string -- The label of the blip
 ---@param sprite number -- The sprite ID of the blip
 ---@param scale number -- The scale of the blip
 ---@param colour number -- The color of the blip
 ---@param coords vector3 -- The coordinates of the blip
----@param width number -- The width of the blip
----@param height number -- The height of the blip
 ---@param setAdditionalProperties table -- Additional properties to set for the blip
 ---@return number -- The blip ID
----@usage QBCorev2.Components.Blip:ToArea('example', 108, 1.0, 30, vector3(-1264.86, -904.98, 11.21), 100.0, 100.0, {flash = {interval = 1000, duration = 5000}})
-function QBCorev2.Components.Blip:ToArea(text, sprite, scale, colour, coords, width, height, setAdditionalProperties)
-    local myBlip = Blip.new(text, sprite, scale, colour)
-    myBlip:addForArea(coords.x, coords.y, coords.z, width, height)
-    if setAdditionalProperties then
-        myBlip:setAdditionalProperties(setAdditionalProperties)
-    end
-end
-
+---@usage QBCorev2.Components.Blip:ToCoord('example', 108, 1.0, 30, GetEntityCoords(PlayerPedId()), {flash = {interval = 1000, duration = 5000}})
 function QBCorev2.Components.Blip:ToCoord(text, sprite, scale, colour, coords, setAdditionalProperties)
-    local myBlip = Blip.new(text, sprite, scale, colour)
+    local myBlip = Blip.new(colour)
+    myBlip:setDefaultProperties({text = text, sprite = sprite, scale = scale})
     myBlip:addForCoord(coords.x, coords.y, coords.z)
     if setAdditionalProperties then
         myBlip:setAdditionalProperties(setAdditionalProperties)
@@ -154,8 +187,18 @@ function QBCorev2.Components.Blip:ToCoord(text, sprite, scale, colour, coords, s
     return myBlip:getBlipInstance()
 end
 
+--- Adds a blip for the specified entity.
+---@param text string -- The label of the blip
+---@param sprite number -- The sprite ID of the blip
+---@param scale number -- The scale of the blip
+---@param colour number -- The color of the blip
+---@param entity number -- The entity to add the blip for
+---@param setAdditionalProperties table -- Additional properties to set for the blip
+---@return number -- The blip ID
+---@usage QBCorev2.Components.Blip:ToEntity('example', 108, 1.0, 30, entity, {flash = {interval = 1000, duration = 5000}})
 function QBCorev2.Components.Blip:ToEntity(text, sprite, scale, colour, entity, setAdditionalProperties)
-    local myBlip = Blip.new(text, sprite, scale, colour)
+    local myBlip = Blip.new(colour)
+    myBlip:setDefaultProperties({text = text, sprite = sprite, scale = scale})
     myBlip:addForEntity(entity)
     if setAdditionalProperties then
         myBlip:setAdditionalProperties(setAdditionalProperties)
@@ -163,24 +206,37 @@ function QBCorev2.Components.Blip:ToEntity(text, sprite, scale, colour, entity, 
     return myBlip:getBlipInstance()
 end
 
-function QBCorev2.Components.Blip:ToRadius(text, sprite, scale, colour, coords, radius, setAdditionalProperties)
-    local myBlip = Blip.new(text, sprite, scale, colour)
+--- Adds a circular blip for the specified coordinates.
+---@param colour number -- The color of the blip
+---@param coords vector3 -- The coordinates of the blip
+---@param radius number -- The radius of the blip
+---@param setRestrictedProperties table -- Additional properties to set for the blip
+---@return number -- The blip ID
+---@usage QBCorev2.Components.Blip:ToRadius(1, GetEntityCoords(PlayerPedId()), 100.0, {alpha = 100})
+function QBCorev2.Components.Blip:ToRadius(colour, coords, radius, setRestrictedProperties)
+    local myBlip = Blip.new(colour)
     myBlip:addForRadius(coords.x, coords.y, coords.z, radius)
-    if setAdditionalProperties then
-        myBlip:setAdditionalProperties(setAdditionalProperties)
+    if setRestrictedProperties then
+        myBlip:setRestrictedProperties(setRestrictedProperties)
     end
     return myBlip:getBlipInstance()
 end
 
+--- Adds a blip for the specified pickup.
+---@param text string -- The label of the blip
+---@param sprite number -- The sprite ID of the blip
+---@param scale number -- The scale of the blip
+---@param colour number -- The color of the blip
+---@param pickup number -- The pickup to add the blip for
+---@param setAdditionalProperties table -- Additional properties to set for the blip
+---@return number -- The blip ID
+---@usage QBCorev2.Components.Blip:ToPickup('example', 108, 1.0, 30, pickup, {flash = {interval = 1000, duration = 5000}})
 function QBCorev2.Components.Blip:ToPickup(text, sprite, scale, colour, pickup, setAdditionalProperties)
-    local myBlip = Blip.new(text, sprite, scale, colour)
+    local myBlip = Blip.new(colour)
+    myBlip:setDefaultProperties({text = text, sprite = sprite, scale = scale})
     myBlip:addForPickup(pickup)
     if setAdditionalProperties then
         myBlip:setAdditionalProperties(setAdditionalProperties)
     end
     return myBlip:getBlipInstance()
 end
-
--- local blip = QBCorev2.Components.Blip:ToCoord('example', 108, 1.0, 30, vector3(385.93, -127.66, 38.68),{flash = {interval = 1000, duration = 5000}})
--- local blip = QBCorev2.Components.Blip:ToCoord('example', 108, 1.0, 30, vector3(385.93, -127.66, 38.68),{flash = {interval = 1000}})
--- local blip = QBCorev2.Components.Blip:ToCoord('example', 108, 1.0, 30, vector3(385.93, -127.66, 38.68),{flash = 1000})
