@@ -13,11 +13,11 @@ QBCorev2.Components.Callbacks = {
     end,
 
     TriggerClientCallback = function(self, name, source, ...)
-        TriggerClientEvent('QBCore:Client:TriggerClientCallback', source, name, ...)
+        TriggerClientEvent('qbcore:components:triggerClientCallback', source, name, ...)
     end,
 }
 
-RegisterNetEvent('qbcore:components:triggerservercallback', function(name, ...)
+RegisterNetEvent('qbcore:components:triggerServerCallback', function(name, ...)
     local src = source
     if not QBCorev2.Components.Callbacks.ServerCallbacks[name] then return QBCorev2.Modules.logger(name,src) end
     QBCorev2.Components.Callbacks.ServerCallbacks[name](src, ...)

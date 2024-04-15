@@ -11,9 +11,9 @@
 -- 5 = Shows on minimap only.
 -- 8 = Shows on both main map and minimap. (Not selectable on map)
 
-QBCorev2.Components.Blip = {}
-Blip = {}
+Blip = setmetatable({}, QBCorev2.CreateErrorHandlerMetaTable("QBCorev2.Components.Blip"))
 Blip.__index = Blip
+QBCorev2.Components.Blip = Blip
 
 -- Constructor
 function Blip.new(colour)
@@ -136,20 +136,6 @@ end
 function Blip:getBlipInstance()
     return self.blip
 end
-
-QBCorev2.Modules.Blip = setmetatable({}, {
-    __index = function(_, key)
-        local method = Blip[key]
-        if method then
-            return function(_, ...) return method(Blip, ...) end
-        else
-            error("Function " .. tostring(key) .. " does not exist in QBCorev2.Modules.Logger")
-        end
-    end,
-    __call = function(_, ...)
-        error("QBCorev2.Modules.Logger cannot be called like a function")
-    end,
-})
 
 --- Adds a rectangular blip for the specified coordinates/area.
 ---@param colour number -- The color of the blip
