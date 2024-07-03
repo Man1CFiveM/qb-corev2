@@ -1,4 +1,4 @@
-function QBCore.Functions.GetCurrentTime() --TODO needs to be redone and checked to see if this can be done server side to
+function QBCorev2.Utils.GetCurrentTime() --TODO needs to be redone and checked to see if this can be done server side to
     local obj = {}
     obj.min = GetClockMinutes()
     obj.hour = GetClockHours()

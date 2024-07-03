@@ -9,11 +9,6 @@ function QBCorev2.Modules.Banking.CreatePlayerAccount(playerId, accountName, acc
     if not QBCore.Functions.GetPlayer(playerId) then
         return false, 'Invalid player ID'
     end
-    QBCorev2.Utils.ValidateArgs({playerId, accountName, accountBalance, accountUsers}, {'number', 'string', 'number', 'table'}, function(success, err)
-        if not success then
-            error(err)
-        end
-    end)
     return exports['qb-banking']:CreatePlayerAccount(accountName, accountBalance)
 end
 
@@ -24,11 +19,6 @@ end
 ---@usage QBCorev2.Modules.AddMoney('bank', 100, 'paycheck')
 function QBCorev2.Modules.Banking.AddMoney(accountName, amount, reason)
     if not reason then reason = 'External Deposit' end
-    QBCorev2.Utils.ValidateArgs({accountName, amount, reason}, {'string', 'number', 'string'}, function(success, err)
-        if not success then
-            error(err)
-        end
-    end)
     return exports['qb-banking']:AddMoney(accountName, amount, reason)
 end
 
@@ -39,11 +29,6 @@ end
 ---@usage QBCorev2.Modules.RemoveMoney('bank', 100, 'purchase')
 function QBCorev2.Modules.Banking.RemoveMoney(accountName, amount, reason)
     if not reason then reason = 'External Withdrawal' end
-    QBCorev2.Utils.ValidateArgs({accountName, amount, reason}, {'string', 'number', 'string'}, function(success, err)
-        if not success then
-            error(err)
-        end
-    end)
     return exports['qb-banking']:RemoveMoney(accountName, amount, reason)
 end
 
@@ -52,11 +37,6 @@ end
 ---@param accountBalance number -- The starting balance of the account
 ---@usage QBCorev2.Modules.CreateJobAccount('bank', 1000)
 function QBCorev2.Modules.Banking.CreateJobAccount(accountName, accountBalance) --TODO should this not have a job id as a parameter?
-    QBCorev2.Utils.ValidateArgs({accountName, accountBalance}, {'string', 'number'}, function(success, err)
-        if not success then
-            error(err)
-        end
-    end)
     return exports['qb-banking']:CreateJobAccount(accountName, accountBalance)
 end
 
@@ -65,11 +45,6 @@ end
 ---@param accountBalance number -- The starting balance of the account
 ---@usage QBCorev2.Modules.CreateGangAccount('bank', 1000)
 function QBCorev2.Modules.Banking.CreateGangAccount(accountName, accountBalance) --TODO should this not have a gangId parameter?
-    QBCorev2.Utils.ValidateArgs({accountName, accountBalance}, {'string', 'number'}, function(success, err)
-        if not success then
-            error(err)
-        end
-    end)
     return exports['qb-banking']:CreateGangAccount(accountName, accountBalance)
 end
 
@@ -85,11 +60,6 @@ function QBCorev2.Modules.Banking.CreateBankStatement(playerId, account, amount,
     if not QBCore.Functions.GetPlayer(playerId) then
         return false, 'Invalid player ID'
     end
-    QBCorev2.Utils.ValidateArgs({playerId, account, amount, reason, statementType, accountType}, {'number', 'string', 'number', 'string', 'string', 'string'}, function(success, err)
-        if not success then
-            error(err)
-        end
-    end)
     return exports['qb-banking']:CreateBankStatement(playerId, account, amount, reason, statementType, accountType)
 end
 
@@ -97,11 +67,6 @@ end
 ---@param accountName string -- The name of the account to get
 ---@usage QBCorev2.Modules.GetAccount('bank') TODO dont think this is bank
 function QBCorev2.Modules.Banking.GetAccount(accountName)
-    QBCorev2.Utils.ValidateArgs({accountName}, {'string'}, function(success, err)
-        if not success then
-            error(err)
-        end
-    end)
     if not exports['qb-banking']:GetAccount(accountName) then
         return false, 'Invalid account name'
     end
@@ -111,10 +76,7 @@ end
 ---@param GetAccountBalance number -- The account to get the balance of
 ---@usage QBCorev2.Modules.GetAccountBalance(1)
 function QBCorev2.Modules.Banking.GetAccountBalance(GetAccountBalance)
-    QBCorev2.Utils.ValidateArgs({GetAccountBalance}, {'number'}, function(success, err)
-        if not success then
-            error(err)
-        end
-    end)
     return exports['qb-banking']:GetAccount(GetAccountBalance)
 end
+
+setmetatable(QBCorev2.Modules.Banking, QBCorev2.errorHandlerMetaTable)

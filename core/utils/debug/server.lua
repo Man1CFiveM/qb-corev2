@@ -1,48 +1,45 @@
-QBCorev2 = QBCorev2 or {}
-QBCorev2.Utils = QBCorev2.Utils or {}
+local function tPrint(tbl, indent)
+    indent = indent or 0
+    local indentStr = string.rep('  ', indent)
 
-local function tPrint(_table, _indent)
-    local colorCodes = {
-        ['table'] = '^3',
-        ['boolean'] = '^1',
-        ['function'] = '^9',
-        ['number'] = '^5',
-        ['string'] = '^2',
-        ['default'] = '^2',
-        ['nil'] = '^8',
+    local formatStrs = {
+        ['boolean'] = '%s^1 %s ^0',
+        ['function'] = '%s^9 %s ^0',
+        ['number'] = '%s^5 %s ^0',
+        ['string'] = "%s ^2'%s' ^0",
+        ['default'] = '%s^2 %s ^0'
     }
 
-    _indent = _indent or 0
-    if type(_table) == 'table' then
-        for k, v in pairs(_table) do
-            local tableType = type(v)
-            local colorCode = colorCodes[tableType] or colorCodes['default']
-            local formatting = ('%s %s%s:^0'):format(string.rep('  ', _indent), colorCode, k)
+    if type(tbl) ~= 'table' then
+        print(('%s ^0%s'):format(indentStr, tostring(tbl)))
+        return
+    end
 
-            if tableType == 'table' then
-                print(formatting)
-                tPrint(v, _indent + 1)
-            else
-                print(('%s %s'):format(formatting, tostring(v)))
-            end
+    for k, v in pairs(tbl) do
+        local tblType = type(v)
+        local formatting = ('%s ^3%s:^0'):format(indentStr, k)
+
+        if tblType == 'table' then
+            print(formatting)
+            tPrint(v, indent + 1)
+        else
+            local formatStr = formatStrs[tblType] or formatStrs['default']
+            print(formatStr:format(formatting, tostring(v)))
         end
-    else
-        print(('%s ^0%s'):format(string.rep('  ', _indent), tostring(_table)))
     end
 end
 
-RegisterServerEvent('qbcore:utils:debug', function(_table, _indent, _resource)
-    QBCorev2.Utils.ValidateArgs({_table, _indent, _resource}, {'table', 'number', 'string'}, function(success, err)
-        if not success then
-           return error(err)
-        end
-    end)
-    print(('\x1b[4m\x1b[36m[ %s : DEBUG]\x1b[0m'):format(_resource))
-    tPrint(_table, _indent)
+RegisterServerEvent('qbcore:utils:debug', function(obj, indent, resource)
+    print(('\x1b[4m\x1b[36m[ %s : DEBUG]\x1b[0m'):format(resource))
+    tPrint(obj, indent)
     print('\x1b[4m\x1b[36m[ END DEBUG ]\x1b[0m')
 end)
 
 function QBCorev2.Utils.Debug(tbl, indent)
-    -- QBCorev2.Utils.validateArgs({tbl, indent}, {'table', 'number'})
-    TriggerEvent('QBCore:DebugSomething', tbl, indent, GetInvokingResource() or 'qb-core')
+    TriggerEvent('qbcore:utils:debug', tbl, indent, GetInvokingResource() or 'qb-core')
+end
+
+--backward compatibility
+function QBCore.Debug(tbl, indent)
+    QBCorev2.Utils.Debug(tbl, indent)
 end

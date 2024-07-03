@@ -11,7 +11,7 @@
 -- 5 = Shows on minimap only.
 -- 8 = Shows on both main map and minimap. (Not selectable on map)
 
-Blip = setmetatable({}, QBCorev2.CreateErrorHandlerMetaTable("QBCorev2.Components.Blip"))
+Blip = {}
 Blip.__index = Blip
 QBCorev2.Components.Blip = Blip
 
@@ -226,3 +226,5 @@ function QBCorev2.Components.Blip:ToPickup(text, sprite, scale, colour, pickup, 
     end
     return myBlip:getBlipInstance()
 end
+
+-- Blip = QBCorev2.CreateErrorHandlerMetaTable("QBCorev2.Components.Blip", Blip)
