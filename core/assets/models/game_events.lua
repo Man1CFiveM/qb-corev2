@@ -1,3 +1,7 @@
+-- AddEventHandler('CTaskEnterVehicleAlign', function (name, args)
+--     print('game event ' .. name .. ' (' .. json.encode(args) .. ')')
+-- end)
+
 QBCorev2.Assets.gameEvent = {
 "ARTFeedbackInterface",
 "ARTFeedbackInterfaceGta",

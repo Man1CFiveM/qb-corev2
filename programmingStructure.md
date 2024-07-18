@@ -158,4 +158,147 @@ Creating guidelines for naming conventions and structuring code is crucial for m
 - Provide mentorship and support for beginners and less experienced contributors to help them grow and improve.
 
 ### Conclusion
+<<<<<<< HEAD
 By establishing clear guidelines for naming conventions, code structure, version control, testing, and collaboration, you can help ensure consistency, maintainability, and scalability in your open-source project. Regularly review and update these guidelines as your project evolves and grows, incorporating feedback from contributors and stakeholders.
+=======
+By establishing clear guidelines for naming conventions, code structure, version control, testing, and collaboration, you can help ensure consistency, maintainability, and scalability in your open-source project. Regularly review and update these guidelines as your project evolves and grows, incorporating feedback from contributors and stakeholders.
+
+
+
+
+
+
+
+Guidelines for New Developers on the FiveM Framework
+
+Welcome to our FiveM framework project! To ensure a smooth onboarding process and effective collaboration, we’ve outlined a set of guidelines and a learning path for new developers. This guide will help you understand the requirements and provide resources to acquire necessary skills if you’re not already familiar with them.
+Technical Requirements and Learning Path
+1. Basic Programming Skills
+
+Requirement: Proficiency in Lua and JavaScript.
+
+    Lua: Start with basic Lua tutorials to understand the scripting language used in FiveM.
+        Lua.org
+        Learn Lua in 15 Minutes
+    JavaScript: For UI development, learn the basics of JavaScript.
+        MDN Web Docs for JavaScript
+        Codecademy’s Learn JavaScript Course
+    HTML/CSS: To create in-game UI components.
+        W3Schools HTML and CSS Tutorials
+
+2. Version Control Systems (Git)
+
+Requirement: Familiarity with Git and GitHub.
+
+    Git Basics: Learn the basics of version control with Git.
+        Git Handbook
+        Codecademy’s Learn Git Course
+    GitHub Usage: Understand how to use GitHub for collaboration.
+        GitHub Learning Lab
+        GitHub Guides
+
+3. Database Management
+
+Requirement: Basic understanding of SQL and database management.
+
+    SQL Fundamentals: Learn the basics of SQL to interact with databases.
+        W3Schools SQL Tutorial
+        Codecademy’s Learn SQL Course
+    FiveM Database Integration: Tutorials on integrating databases with FiveM.
+        FiveM Forums and Community Resources
+
+4. Coding Standards and Best Practices
+
+Requirement: Understanding and adherence to coding standards.
+
+    Coding Standards: Learn about coding standards and why they matter.
+        Google's Coding Standards
+        Clean Code by Robert C. Martin
+
+5. Debugging and Problem Solving
+
+Requirement: Basic debugging skills.
+
+    Debugging Techniques: Learn how to debug code effectively.
+        Debugging JavaScript - MDN
+        Use print statements and logging for Lua scripts.
+
+6. Documentation Skills
+
+Requirement: Ability to write clear documentation.
+
+    Importance of Documentation: Understand the value of good documentation.
+        Writing Good Documentation - Dev.to
+    Documenting Code: Learn how to document your code and APIs.
+        API Documentation Guide
+
+Contribution Guidelines
+
+    Code Quality:
+        Write clean, maintainable, and efficient code following our coding standards.
+
+    Testing:
+        Write unit and integration tests for new features to ensure stability.
+
+    Commit Messages:
+        Use clear and descriptive commit messages, following conventional formats (e.g., feat, fix, docs).
+
+    Pull Request Process:
+        Create detailed pull requests with descriptions of changes.
+        Participate in the review process and address feedback promptly.
+
+    Issue Tracking:
+        Use our issue tracker to report and manage bugs and feature requests with clear descriptions and reproduction steps.
+
+Onboarding Process
+
+    Introduction to the Project:
+        Overview of the project, its goals, and current state.
+        Introduction to the core team and their roles.
+
+    Setting Up the Development Environment:
+        Detailed instructions for setting up the development environment.
+        Support for troubleshooting setup issues.
+
+    Access to Resources:
+        Grant access to necessary repositories, databases, and servers.
+        Share relevant documentation and development resources.
+
+    Mentorship and Support:
+        Assign a mentor or point of contact for new developers.
+        Regular check-ins to ensure smooth onboarding and integration into the team.
+
+Community and Culture
+
+    Respect and Inclusivity:
+        Promote a respectful and inclusive environment.
+        Establish a code of conduct to prevent harassment and discrimination.
+
+    Feedback and Continuous Improvement:
+        Encourage regular feedback on the development process.
+        Continuously seek ways to improve collaboration and productivity.
+
+Suggested Learning Path
+
+Week 1-2:
+
+    Learn basic Lua and JavaScript. Complete a simple Lua script for FiveM.
+
+Week 3-4:
+
+    Basic Git and GitHub usage. Create a repository and make simple commits.
+
+Month 2:
+
+    Basic SQL and database interactions. Set up a basic database for a FiveM resource.
+
+Month 3:
+
+    Learn about coding standards and best practices. Start contributing to small features or bug fixes.
+
+Ongoing:
+
+    Participate in community forums. Continuous learning through online courses and tutorials. Regular code reviews and pair programming sessions.
+
+By following these guidelines and utilizing the provided resources, you can develop the skills necessary to contribute effectively to our FiveM framework project. Welcome aboard, and happy coding!
+>>>>>>> 79c5acc1411c00a43030305a70008ca2170d3e28
