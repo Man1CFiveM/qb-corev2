@@ -6,17 +6,19 @@ description 'Core resource for the framework, contains all the core functionalit
 version '2.0.0'
 
 shared_scripts {
-    '__init.lua',
     'config.lua',
+    '__init.lua',
     'core/utils/**/shared.lua',
 }
 
 client_scripts {
+    'core/utils/**/client.lua',
     'core/**/**/client.lua',
 }
 
 server_scripts {
     '@oxmysql/lib/MySQL.lua',
+    'core/utils/**/server.lua',
     'core/**/**/server.lua',
 }
 

@@ -1,6 +1,3 @@
-QBCorev2 = QBCorev2 or {}
-QBCorev2.Utils = QBCorev2.Utils or {}
-
-function QBCorev2.Utils.Debug(resource, obj, depth)
-    TriggerServerEvent('qbcore:utils:debug', resource, obj, depth)
+function QBCorev2.Utils.Debug(obj)
+    TriggerServerEvent('qbcore:utils:debug', obj, 0, GetInvokingResource() or 'qb-core')
 end

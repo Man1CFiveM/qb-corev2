@@ -1,8 +1,8 @@
 QBCorev2.Modules.ClearArea = {}
 
 -- Clear a area of objects, peds, vehicles etc. at the given coordinates and radius. Has a ignoreCopCars and ignoreObjects parameter
-function QBCorev2.Modules.ClearArea:General(ignoreCopCars, ignoreObjects)
-    ClearArea(self.coords.x, self.coords.y, self.coords.z, self.radius, true, ignoreCopCars, ignoreObjects, false)
+function QBCorev2.Modules.ClearArea:General(coords, radius, ignoreCopCars, ignoreObjects)
+    ClearArea(coords.x, coords.y, coords.z, radius, true, ignoreCopCars, ignoreObjects, false)
 end
 
 -- Flags are 0, 2, 6, 16, 17 but not sure what they do yet. maybe type of objects to remove?
@@ -34,3 +34,5 @@ end
 function QBCorev2.Modules.ClearArea:RemoveProjectiles(createNetEvent)
     ClearAreaOfProjectiles(self.coords.x, self.coords.y, self.coords.z, self.radius, createNetEvent)
 end
+
+-- setmetatable(QBCorev2.Modules.ClearArea, QBCorev2.CreateErrorHandlerMetaTable("QBCorev2.Modules.ClearArea"))
