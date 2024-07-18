@@ -1,3 +1,310 @@
+QBCore.Management.Players = {}
+QBCore.Management.Player = {}
+
+local function setupMoney()
+    local moneyDefaults = {}
+    for moneytype, startamount in pairs(QBConfig.Money.MoneyTypes) do
+        moneyDefaults[moneytype] = startamount
+    end
+    return moneyDefaults
+end
+
+local function createMetadata()
+    return {
+        hunger = 100,
+        thirst = 100,
+        stress = 0,
+        isdead = false,
+        inlaststand = false,
+        armor = 0,
+        ishandcuffed = false,
+        tracker = false,
+        injail = 0,
+        jailitems = {},
+        status = {},
+        phone = {},
+        rep = {},
+        currentapartment = nil,
+        callsign = 'NO CALLSIGN',
+        bloodtype = QBConfig.Player.Bloodtypes[math.random(1, #QBConfig.Player.Bloodtypes)],
+        fingerprint = QBCore.Player.CreateFingerId(),
+        walletid = QBCore.Player.CreateWalletId(),
+        criminalrecord = {
+            hasRecord = false,
+            date = nil
+        },
+        licences = {
+            driver = true,
+            business = false,
+            weapon = false
+        },
+        inside = {
+            house = nil,
+            apartment = {
+                apartmentType = nil,
+                apartmentId = nil,
+            }
+        },
+        phonedata = {
+            SerialNumber = QBCore.Player.CreateSerialNumber(),
+            InstalledApps = {}
+        }
+    }
+end
+
+Player = {}
+Player.__index = Player
+
+-- Constructor
+function Player.new()
+    local self = setmetatable({}, Player)
+    self.citizenid = 0
+    self.cid = 0
+    self.money = 0
+    self.optin = true
+    self.charinfo = {}
+    self.job = {}
+    self.gang = {}
+    self.metadata = {} -- should be split up fully
+    self.position = vector4(0.0, 0.0, 0.0, 0.0)
+    self.items = {}
+    return self
+end
+
+function Player:newAccount()
+    self.citizenid = QBCore.Player.CreateCitizenId()
+    self.cid = source
+    self.money = setupMoney()
+    self.charinfo = CreateCharInfo()
+    self.job = CreateJobDefaults()
+    self.gang = CreateGangDefaults()
+    self.metadata = createMetadata()
+    self.position = QBConfig.DefaultSpawn
+    self.items = {}
+    self:setState(source)
+end
+
+function Player:setState(src)
+    local plyState = Player(src).state
+    plyState:set('optin',true, true)
+    plyState:set('hunger', 100, true)
+    plyState:set('thirst', 100, true)
+    plyState:set('stress', 0, true)
+    plyState:set('isdead', false, true)
+    plyState:set('inlaststand', false, true)
+    plyState:set('armor', 0, true)
+    plyState:set('ishandcuffed', false, true)
+    plyState:set('tracker', false, true)
+    plyState:set('cid', src, true)
+
+    -- plyState:set('radio', GetConvarInt('voice_defaultRadioVolume', 30), true)
+    -- plyState:set('call', GetConvarInt('voice_defaultCallVolume', 60), true)
+    -- plyState:set('submix', nil, true)
+    -- plyState:set('proximity', {}, true)
+    -- plyState:set('callChannel', 0, true)
+    -- plyState:set('radioChannel', 0, true)
+    -- plyState:set('voiceIntent', 'speech', true)
+    -- -- We want to save voice inits because we'll automatically reinitalize calls and channels
+    -- plyState:set('pmaVoiceInit', true, false)
+end
+
+function Player:setMetadata(job, grade)
+    job = job:lower()
+    grade = tostring(grade) or '0'
+    if not QBCore.Shared.Jobs[job] then return false end
+    self.playerData.job.name = job
+    self.playerData.job.label = QBCore.Shared.Jobs[job].label
+    self.playerData.job.onduty = QBCore.Shared.Jobs[job].defaultDuty
+    self.playerData.job.type = QBCore.Shared.Jobs[job].type or 'none'
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- function QBCore.Player.CreateCitizenId()
+--     local CitizenId = tostring(QBCore.Shared.RandomStr(3) .. QBCore.Shared.RandomInt(5)):upper()
+--     local result = MySQL.prepare.await('SELECT EXISTS(SELECT 1 FROM players WHERE citizenid = ?) AS uniqueCheck', { CitizenId })
+--     if result == 0 then return CitizenId end
+--     return QBCore.Player.CreateCitizenId()
+-- end
+
+-- function CreateNewPlayer()
+--     local newPlayer = {}
+
+--     newPlayer.citizenid = QBCore.Player.CreateCitizenId()
+--     newPlayer.cid = 1
+--     newPlayer.money = CreateMoneyDefaults()
+--     newPlayer.optin = true
+--     newPlayer.charinfo = CreateCharInfo()
+--     newPlayer.job = CreateJobDefaults()
+--     newPlayer.gang = CreateGangDefaults()
+--     newPlayer.metadata = CreateMetadata()
+--     newPlayer.position = QBConfig.DefaultSpawn
+--     newPlayer.items = {}
+
+--     return newPlayer
+-- end
+
+function SetSate()
+    local moneyDefaults = {}
+    for moneytype, startamount in pairs(QBConfig.Money.MoneyTypes) do
+        moneyDefaults[moneytype] = startamount
+    end
+    return moneyDefaults
+end
+
+function CreateMoneyDefaults()
+    local moneyDefaults = {}
+    for moneytype, startamount in pairs(QBConfig.Money.MoneyTypes) do
+        moneyDefaults[moneytype] = startamount
+    end
+    return moneyDefaults
+end
+
+function CreateCharInfo()
+    return {
+        firstname = 'Firstname',
+        lastname = 'Lastname',
+        birthdate = '00-00-0000',
+        gender = 0,
+        nationality = 'USA',
+        phone = QBCore.Functions.CreatePhoneNumber(),
+        account = QBCore.Functions.CreateAccountNumber()
+    }
+end
+
+function CreateOrganizationDefaults(orgType)
+    if orgType == 'job' then
+        return {
+            name = 'unemployed',
+            label = 'Civilian',
+            payment = 10,
+            type = 'none',
+            onduty = false,
+            isboss = false,
+            grade = {
+                name = 'Freelancer',
+                level = 0
+            }
+        }
+    elseif orgType == 'gang' then
+        return {
+            name = 'none',
+            label = 'No Gang Affiliation',
+            isboss = false,
+            grade = {
+                name = 'none',
+                level = 0
+            }
+        }
+    else
+        error('Invalid organization type: ' .. orgType)
+    end
+end
+
+
+QBConfig.Player.PlayerDefaults = {
+    citizenid = function() return QBCore.Player.CreateCitizenId() end,
+    cid = 1,
+    money = function()
+        local moneyDefaults = {}
+        for moneytype, startamount in pairs(QBConfig.Money.MoneyTypes) do
+            moneyDefaults[moneytype] = startamount
+        end
+        return moneyDefaults
+    end,
+    optin = true,
+    charinfo = {
+        firstname = 'Firstname',
+        lastname = 'Lastname',
+        birthdate = '00-00-0000',
+        gender = 0,
+        nationality = 'USA',
+        phone = function() return QBCore.Functions.CreatePhoneNumber() end,
+        account = function() return QBCore.Functions.CreateAccountNumber() end
+    },
+    job = {
+        name = 'unemployed',
+        label = 'Civilian',
+        payment = 10,
+        type = 'none',
+        onduty = false,
+        isboss = false,
+        grade = {
+            name = 'Freelancer',
+            level = 0
+        }
+    },
+    gang = {
+        name = 'none',
+        label = 'No Gang Affiliation',
+        isboss = false,
+        grade = {
+            name = 'none',
+            level = 0
+        }
+    },
+    metadata = {
+        hunger = 100,
+        thirst = 100,
+        stress = 0,
+        isdead = false,
+        inlaststand = false,
+        armor = 0,
+        ishandcuffed = false,
+        tracker = false,
+        injail = 0,
+        jailitems = {},
+        status = {},
+        phone = {},
+        rep = {},
+        currentapartment = nil,
+        callsign = 'NO CALLSIGN',
+        bloodtype = function() return QBConfig.Player.Bloodtypes[math.random(1, #QBConfig.Player.Bloodtypes)] end,
+        fingerprint = function() return QBCore.Player.CreateFingerId() end,
+        walletid = function() return QBCore.Player.CreateWalletId() end,
+        criminalrecord = {
+            hasRecord = false,
+            date = nil
+        },
+        licences = {
+            driver = true,
+            business = false,
+            weapon = false
+        },
+        inside = {
+            house = nil,
+            apartment = {
+                apartmentType = nil,
+                apartmentId = nil,
+            }
+        },
+        phonedata = {
+            SerialNumber = function() return QBCore.Player.CreateSerialNumber() end,
+            InstalledApps = {}
+        }
+    },
+    position = QBConfig.DefaultSpawn,
+    items = {},
+}
+
+
+
+
+
+
+
+
 -- Player = {}
 -- Player.__index = Player
 
@@ -1015,16 +1322,3 @@
 --         self.Functions.UpdatePlayerData()
 --     end
 -- end
-
-function GetIdentifier(playerSrc)
-    local src = tostring(playerSrc)
-    local identifierAmount = GetNumPlayerIdentifiers(src)
-    local identifierTable = {}
-    for i = 0, identifierAmount - 1 do
-        local key, value = string.match(GetPlayerIdentifier(src, i), "(%w+):(.*)")
-        identifierTable[key] = value
-    end
-    return identifierTable
-end
-
-GetIdentifier(6)
