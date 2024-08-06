@@ -1,16 +1,16 @@
-local Timeout = {}
+local timeout
 
 function QBCorev2.Components.Timeout.set(self)
-  self.time = os.time()
+  timeout = os.time()
 end
 
 function QBCorev2.Components.Timeout.get(self)
-  return self.time
+  return timeout
 end
 
 function QBCorev2.Components.Timeout.check(self, seconds)
   local time = os.time()
-  if time - self.time >= seconds then
+  if time - timeout >= seconds then
     return true
   end
   return false

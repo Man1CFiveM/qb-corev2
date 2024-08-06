@@ -1,0 +1,41 @@
+local lastX, lastY, lastZ = nil, nil, nil
+local minDistance = 100  -- Minimum distance from the last tried coordinate
+
+local function getRandomSafeLocation(corner1, corner2, corner3, corner4)
+    -- Calculate the center and size of the area
+    local centerX = (corner1.x + corner2.x + corner3.x + corner4.x) / 4
+    local centerY = (corner1.y + corner2.y + corner3.y + corner4.y) / 4
+    local centerZ = (corner1.z + corner2.z + corner3.z + corner4.z) / 4
+    local sizeX = math.max(corner1.x, corner2.x, corner3.x, corner4.x) - math.min(corner1.x, corner2.x, corner3.x, corner4.x)
+    local sizeY = math.max(corner1.y, corner2.y, corner3.y, corner4.y) - math.min(corner1.y, corner2.y, corner3.y, corner4.y)
+    local sizeZ = math.max(corner1.z, corner2.z, corner3.z, corner4.z) - math.min(corner1.z, corner2.z, corner3.z, corner4.z)
+
+    -- Generate a random coordinate using a Gaussian distribution
+    local randomX = centerX + (math.random() * 2 - 1) * sizeX / 2
+    local randomY = centerY + (math.random() * 2 - 1) * sizeY / 2
+    local randomZ = centerZ + (math.random() * 2 - 1) * sizeZ / 2
+
+    local offsets = { -100, 0, 100 }
+    for _, offsetX in ipairs(offsets) do
+        for _, offsetY in ipairs(offsets) do
+            for _, offsetZ in ipairs(offsets) do
+                local testX = randomX + offsetX
+                local testY = randomY + offsetY
+                local testZ = randomZ + offsetZ
+
+                local found, safeCoord = GetSafeCoordForPed(testX, testY, testZ, false, 16)
+                if found then
+                    return safeCoord
+                end
+            end
+        end
+    end
+
+    -- If no safe location was found, try again
+    return getRandomSafeLocation(corner1, corner2, corner3, corner4)
+end
+
+CreateThread(function()
+    local safeLocation = getRandomSafeLocation(vector3(-2268.07, 817.73, 213.17), vector3(1910.88, 762.9, 192.08), vector3(1644.76, -2496.73, 79.1), vector3(-1868.7, -3014.71, 13.94))
+    print(safeLocation)
+end)
