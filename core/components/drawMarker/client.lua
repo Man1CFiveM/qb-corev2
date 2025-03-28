@@ -81,16 +81,16 @@
 
 --     Lua
 
-function QBCorev2.Components.DrawMarker()
-	CreateThread(function()
-		while true do
-			-- draw every frame
-			Wait(0)
+-- function QBCorev2.Components.DrawMarker()
+-- 	CreateThread(function()
+-- 		while true do
+-- 			-- draw every frame
+-- 			Wait(0)
 
-			local pedCoords = GetEntityCoords(PlayerPedId())
-			DrawMarker(2, pedCoords.x, pedCoords.y, pedCoords.z + 2, 0.0, 0.0, 0.0, 0.0, 180.0, 0.0, 2.0, 2.0, 2.0, 255, 128, 0, 50, false, true, 2, nil, nil, false)
-		end
-	end)
-end
+-- 			local pedCoords = GetEntityCoords(PlayerPedId())
+-- 			DrawMarker(2, pedCoords.x, pedCoords.y, pedCoords.z + 2, 0.0, 0.0, 0.0, 0.0, 180.0, 0.0, 2.0, 2.0, 2.0, 255, 128, 0, 50, false, true, 2, nil, nil, false)
+-- 		end
+-- 	end)
+-- end
 
 

@@ -43,6 +43,12 @@ function QBCorev2.Components.Vehicle.GetPlate(vehicle)
     return QBCorev2.Utils.Trim(GetVehicleNumberPlateText(vehicle))
 end
 
+function QBCorev2.Components.Vehicle.SetPlateStyle(vehicle)
+    local getNumberOfPlateStyles = GetNumberOfVehicleNumberPlates()
+    local plateStyle = math.random(1, getNumberOfPlateStyles)
+    SetVehicleNumberPlateTextIndex(vehicle, plateStyle)
+end
+
 function QBCorev2.Components.Vehicle.GetLabel(vehicle)
     if vehicle == nil or vehicle == 0 then return end
     return GetLabelText(GetDisplayNameFromVehicleModel(GetEntityModel(vehicle)))

@@ -1,7 +1,5 @@
 
-QBCorev2 = QBCorev2 or {}
-QBCorev2.Modules = QBCorev2.Modules or {}
-
+QBCorev2.Components = {} or QBCorev2.Components
 -- Function to run an animation
 --- @param animDic string: The name of the animation dictionary
 --- @param animName string - The name of the animation within the dictionary

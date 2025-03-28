@@ -51,3 +51,38 @@
 --         return error("Function " .. key .. " does not exist in QBCorev2Functions.Display", 2)
 --     end
 -- })
+
+
+-- SetTextFont(fontType)  -- Sets the font of the text
+-- SetTextProportional(proportional)  -- Sets whether the text is proportional
+-- SetTextScale(scaleX, scaleY)  -- Sets the scale of the text
+-- SetTextColour(red, green, blue, alpha)  -- Sets the color of the text
+-- SetTextDropshadow(distance, red, green, blue, alpha)  -- Sets the dropshadow of the text
+-- SetTextEdge(p, red, green, blue, alpha)  -- Sets the edge of the text
+-- SetTextOutline()  -- Sets the outline of the text
+-- SetTextCentre(center)  -- Sets the text to be centered
+-- SetDrawOrigin(x, y, z, p)  -- Sets the origin point for drawing in the 3D world
+-- ClearDrawOrigin()  -- Clears the draw origin to reset the drawing state
+-- SetTextEntry("STRING")  -- Sets the text entry for the text
+-- AddTextComponentString(text)  -- Adds a text component string
+-- AddTextComponentSubstringPlayerName(text)  -- Adds a text component substring with the player's name
+-- BeginTextCommandDisplayText("STRING")  -- Begins the text command to display text
+-- BeginTextCommandGetWidth("STRING")  -- Begins the text command to get the width of the text, seems to be returing the width of the text in pixels
+-- EndTextCommandDisplayText(x, y)  -- Ends the text command to display text
+-- DrawText(x, y)  -- Draws the text at the specified 2D coordinates
+
+-- QBCorev2.Components = {} or QBCorev2.Components
+
+QBCorev2.Components.ShowSubtitle = function(text, duration)
+    BeginTextCommandPrint("STRING")
+    AddTextComponentSubstringPlayerName(text)
+    EndTextCommandPrint(duration, true)
+end
+
+-- Example usage
+CreateThread(function()
+    while true do
+        Wait(5000) -- Wait for 5 seconds
+        QBCorev2.Components.ShowSubtitle("Hello, this is a subtitle!", 2000) -- Show subtitle for 2 seconds
+    end
+end)

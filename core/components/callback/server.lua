@@ -1,4 +1,4 @@
-local QBCore = exports['qb-core']:GetCoreObject()
+-- local QBCore = exports['qb-core']:GetCoreObject()
 
 function QBCorev2.Components.TriggerClientCallback(name, source, cb, ...)
     QBCorev2.ClientCallbacks[name] = cb
